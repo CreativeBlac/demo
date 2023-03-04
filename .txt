@@ -1,0 +1,20 @@
+ const dowonloadLinks = document.querySelectorAll('[data-download]');
+        dowonloadLinks.forEach(buttons => {
+            const id = buttons.dataset.download;
+            const imgw = document.getElementById(id)
+            const a = document.createElement('a');
+            a.href = imgw.src;
+            a.download = "";
+            a.style.display = "none";
+            buttons.addEventListener('click', () => {
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a)
+            })
+        })
+
+formWl.addEventListener('submit', (e) => {
+            e.preventDefault()
+            news()
+        })
+            <button type="button" data-download="iage" class="btn">Download Stuff</button>
