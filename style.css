@@ -38,3 +38,11 @@ img {
     margin: 12px;
     object-fit: cover;
 }
+
+#div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 26px;
+    justify-content: center;
+    align-items: center;
+}

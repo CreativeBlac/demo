@@ -4,6 +4,7 @@ const apiKey = 'jcZGeGMCLey8jUuI08tKEL3XPTb2RGDd4HxFsxc8tmSs7FBvgDKNFBWN';
 const formEl = document.getElementById('form');
 const searchEl = document.getElementById('search');
 
+//response
 async function getImg() {
     let url = 'https://api.pexels.com/v1/search?query=' + searchEl.value
     const response = await fetch(url, {
@@ -18,16 +19,18 @@ async function getImg() {
             return response.json()
         })
         .then(data => {
-            let gottenPhotoes = getPhotos(data.photos);
+            //let gottenPhotoes = getPhotos(data.photos);
             console.log(data.photos);
             //getting single array properties with the for loop
             createDiv(data)
-            return gottenPhotoes;
+                // return gottenPhotoes;
         }).catch((err) => {
             console.log('Error Occured At:' + err.message);
         })
 }
 
+
+//getting photos from response
 function getPhotos(photos) {
     photos.map(photo => {
         const openEl = document.querySelector('.open');
@@ -44,14 +47,13 @@ function getPhotos(photos) {
 function createDiv(data) {
     const div = document.getElementById('div');
     for (let i = 0; i < data.photos.length; i++) {
-        const n = data.photos[i]
-            // let mr = `<div id="${n.id}" class="change">
-            // <img src="${n.src.original}" class="img">
-            // <button type="button" data-download="${n.src.original}">Submit</button>
-            // </div>`;
+        const n = data.photos[i];
 
         let mr = document.createElement('div');
         mr.id = n.id;
+        mr.style.display = 'flex'
+        mr.style.width = 400 + 'px';
+        mr.style.flexWrap = 'wrap'
         let ig = document.createElement('img');
         ig.src = n.src.original;
         ig.id = n.id;
@@ -70,6 +72,9 @@ function createDiv(data) {
 }
 
 //download function
+const downloadLink = (l) => {
+    console.log(btn)
+}
 
 
 //event handler
