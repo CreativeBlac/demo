@@ -3,7 +3,6 @@ const apiKey = 'jcZGeGMCLey8jUuI08tKEL3XPTb2RGDd4HxFsxc8tmSs7FBvgDKNFBWN';
 
 const formEl = document.getElementById('form');
 const searchEl = document.getElementById('search');
-
 //response
 async function getImg() {
     let url = 'https://api.pexels.com/v1/search?query=' + searchEl.value
@@ -21,9 +20,11 @@ async function getImg() {
         .then(data => {
             //let gottenPhotoes = getPhotos(data.photos);
             console.log(data.photos);
+
             //getting single array properties with the for loop
             createDiv(data)
-                // return gottenPhotoes;
+
+            // return gottenPhotoes;
         }).catch((err) => {
             console.log('Error Occured At:' + err.message);
         })
@@ -59,32 +60,70 @@ function createDiv(data) {
         ig.id = n.id;
         let btn = document.createElement('button');
         btn.type = 'button';
+        btn.classList = 'buttoms'
         btn.dataset.download = n.id;
         btn.innerText = "Download";
+
+        //download btn eventlistener
+
+        btn.addEventListener('click', () => {
+            const blob = new Blob([ig.src], {
+                    type: 'image/jpeg'
+                })
+                //downloadLink(btn.dataset.download, ig.src, btn)
+            downloadLink(blob, 'image.jpeg')
+        })
+
+
         mr.appendChild(ig)
         mr.appendChild(btn);
 
         div.append(mr)
-            //div.append(mr);
         console.log(mr)
     }
 
 }
 
 //download function
-const downloadLink = (l) => {
-    console.log(btn)
+const downloadLink = (blob, filename) => {
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click()
+
+
+
+    // const blob = new Blob([source], { type: 'image/jpeg' });
+    // const href = URL.createObjectURL(blob);
+    // const a = Object.assign(document.createElement('a'), {
+    //     href,
+    //     style: "display:none",
+    //     download: '',
+    // });
+    // a.append(btns);
+    // a.click();
+    // URL.revokeObjectURL(href);
+
+
+    //consoles
+    console.log(url)
+    console.log(href)
+    console.log(btns)
+    console.log(source)
 }
 
 
 //event handler
 formEl.addEventListener('submit', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.preventDefault();
+    e.preventDefault();
+    e.stopPropagation();
+    e.preventDefault();
 
 
-        getImg()
-    })
-    //console.log(searchImage)
-    //console.log(searchImage)
+    getImg()
+})
+
+//console.log(searchImage)
+//console.log(searchImage)
