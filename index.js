@@ -7,13 +7,13 @@ const searchEl = document.getElementById('search');
 async function getImg() {
     let url = 'https://api.pexels.com/v1/search?query=' + searchEl.value
     const response = await fetch(url, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Authorization': apiKey
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Authorization': apiKey
 
-            }
-        })
+        }
+    })
         .then(response => {
             return response.json()
         })
@@ -36,7 +36,7 @@ function getPhotos(photos) {
     photos.map(photo => {
         const openEl = document.querySelector('.open');
         const img = document.createElement('img');
-        img.src = photo.src.original
+        img.src = photo.src.small;
         openEl.appendChild(img)
     })
 }
@@ -67,11 +67,13 @@ function createDiv(data) {
         //download btn eventlistener
 
         btn.addEventListener('click', () => {
-            const blob = new Blob([ig.src], {
-                    type: 'image/jpeg'
-                })
-                //downloadLink(btn.dataset.download, ig.src, btn)
-            downloadLink(blob, 'image.jpeg')
+            // const blob = new Blob([ig.src], {
+            //         type: 'image/jpeg'
+            //     })
+            //downloadLink(btn.dataset.download, ig.src, btn)
+            const lastSlash = ig.src.lastIndexOf('/');
+            const filename = ig.src.slice(lastSlash + 1);
+            downloadLink(ig.src);
         })
 
 
@@ -85,13 +87,32 @@ function createDiv(data) {
 }
 
 //download function
-const downloadLink = (blob, filename) => {
+const downloadLink = (image) => {
+    const lastSlash = image.lastIndexOf('/');
+    const filename = image.slice(lastSlash + 1);
 
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click()
+    // https://stackoverflow.com/questions/36000658/javascript-blob-anchortag-download-produces-corrupted-file
+    // need an arrayBuffer else the file will be corrupted
+    fetch(image)
+        .then((response) => { return response.arrayBuffer() })
+        .then((data) => {
+            console.log(data);
+            const blob = new Blob([data], {
+                type: 'image/jpeg'
+            })
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+        });
+
+    // const url = window.URL.createObjectURL(blob);
+    // const a = document.createElement('a');
+    // a.href = url;
+    // a.download = filename;
+    // a.click();
 
 
 
@@ -108,10 +129,11 @@ const downloadLink = (blob, filename) => {
 
 
     //consoles
-    console.log(url)
-    console.log(href)
-    console.log(btns)
-    console.log(source)
+    // console.log(url)
+    // console.log(a.href)
+    // console.log(filename);
+    // console.log(btns)
+    // console.log(source)
 }
 
 
